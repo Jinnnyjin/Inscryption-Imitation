@@ -9,30 +9,30 @@ public class Board
     public CardInstance[] monsterRow = new CardInstance[4];
     public CardInstance[] playerRow = new CardInstance[4];
 
-    
+
 
     /// <summary>
-    /// 지정된 보드 열과 인덱스에 해당하는 카드 인스턴스를 확인
+    /// 지정된 보드 위치에 해당하는 카드 인스턴스를 확인
     /// </summary>
-    /// <param name="row">가져올 보드 열 (Preview, Monster, Player)</param>
-    /// <param name="index">해당 열 안에서 카드 위치 ( 0 ~ 3 )</param>
-    /// <returns>해당 위치의 CardInstance, 카드가 없다면 null</returns>
-    public CardInstance GetCard(BoardRow row, int index)
+    /// <param name="pos">조회할 보드 위치 (row , index) / 
+    /// row = ( preview, monster, player) / 
+    /// index = 0~3</param>
+    /// <returns>해당 위치의 CardInstance. 카드가 없으면 null</returns>
+    public CardInstance GetCard(BoardPosition pos)
     {
-        CardInstance[] target = GetRowArray(row);
-        return target[index];
+        return GetRowArray(pos.row)[pos.index];
     }
 
     /// <summary>
-    /// 지정된 보드 열과 인덱스에 카드 인스턴스를 설정
+    /// 지정된 보드 위치에 해당하는 카드 인스턴스를 확인
     /// </summary>
-    /// <param name="row">가져올 보드 열 (Preview, Monster, Player)</param>
-    /// <param name="index">해당 열 안에서 카드 위치 ( 0 ~ 3 )</param>
+    /// <param name="pos">조회할 보드 위치 (row , index) / 
+    /// row = ( preview, monster, player) / 
+    /// index = 0~3</param>
     /// <param name="card">놓을 카드인스턴스</param>
-    public void SetCard(BoardRow row, int index, CardInstance card)
+    public void SetCard(BoardPosition pos, CardInstance card)
     {
-        CardInstance[] target = GetRowArray(row);
-        target[index] = card;
+        GetRowArray(pos.row)[pos.index] = card;
     }
 
     /// <summary>
