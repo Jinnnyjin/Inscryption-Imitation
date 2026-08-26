@@ -1,6 +1,5 @@
 
 using System;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 /// <summary>
 /// 스테이지(전투)에 활용되는 보드판
@@ -37,10 +36,11 @@ public class Board
     public void PlaceCard(BoardPosition pos, CardInstance card)
     {
         if(!IsEmpty(pos))
-            throw new System.InvalidOperationException($"{pos.row}열 {pos.index}칸에 이미 카드가 있습니다.");
+            throw new InvalidOperationException($"{pos.row}열 {pos.index}칸에 이미 카드가 있습니다.");
         
         GetRowArray(pos.row)[pos.index] = card;
     }
+
 
     /// <summary>
     /// 지정된 보드 위치에 해당하는 카드 인스턴스를 제거
@@ -48,19 +48,19 @@ public class Board
     /// <param name="pos">조회할 보드 위치 (row , index) / 
     /// row = ( preview, monster, player) / 
     /// index = 0~3</param>
-    /// <param name="card">놓을 카드인스턴스</param>
     public void RemoveCard(BoardPosition pos)
     {
         if (IsEmpty(pos))
-            throw new System.InvalidOperationException($"{pos.row}열 {pos.index}칸은 이미 비어 있습니다.");
+            throw new InvalidOperationException($"{pos.row}열 {pos.index}칸은 이미 비어 있습니다.");
 
         GetRowArray(pos.row)[pos.index] = null;
     }
 
+
     /// <summary>
     /// 지정된 보드 위치가 비어있는지 확인
     /// </summary>
-    /// <param name="pos">name="pos">조회할 보드 위치 (row , index) / 
+    /// <param name="pos">조회할 보드 위치 (row , index) / 
     /// row = ( preview, monster, player) / 
     /// index = 0~3</param>
     /// <returns>비어있다면 true, 카드가 있다면 false</returns>
@@ -76,7 +76,7 @@ public class Board
     /// </summary>
     /// <param name="row">조회할 보드 열</param>
     /// <returns>해당 열의 CardInstance 배열</returns>
-    /// <exception cref="System.ArgumentException">정의되지 않은 BoardRow 값이 들어온 경우</exception>
+    /// <exception cref="ArgumentException">정의되지 않은 BoardRow 값이 들어온 경우</exception>
     private CardInstance[] GetRowArray(BoardRow row)
     {
         switch(row)
@@ -88,8 +88,27 @@ public class Board
             case BoardRow.Player:
                 return playerRow;
             default:
-                throw new System.ArgumentException($"Unknown row: {row}");
+                throw new ArgumentException($"Unknown row: {row}");
 
         }
+    }
+
+    /// <summary>
+    /// 현재 위치의 반대편 카드위치를 반환
+    /// </summary>
+    /// <param name="pos">현재 위치</param>
+    /// <returns>player열 - monster열 / preview열은 반환하지 않음</returns>
+    /// <exception cref="ArgumentException"></exception>
+    public BoardPosition GetOpposite(BoardPosition pos)
+    {
+        BoardRow opposite = pos.row switch
+        {
+            BoardRow.Player => BoardRow.Monster,
+            BoardRow.Monster => BoardRow.Player,
+            BoardRow.Preview => throw new ArgumentException("Preview row는 마주보는 줄이 없습니다."),
+            _ => throw new ArgumentException($"Unknown row: {pos.row}")
+        };
+
+        return new BoardPosition(opposite, pos.index);
     }
 }
