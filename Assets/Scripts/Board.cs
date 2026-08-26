@@ -1,5 +1,6 @@
 
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 /// <summary>
 /// 스테이지(전투)에 활용되는 보드판
@@ -93,6 +94,7 @@ public class Board
         }
     }
 
+
     /// <summary>
     /// 현재 위치의 반대편 카드위치를 반환
     /// </summary>
@@ -110,5 +112,37 @@ public class Board
         };
 
         return new BoardPosition(opposite, pos.index);
+    }
+
+
+    /// <summary>
+    /// 지정된 보드 위치의 왼쪽 위치를 반환
+    /// </summary>
+    /// <param name="pos">기준이 되는 보드 위치 (row , index) / 
+    /// row = ( preview, monster, player) / 
+    /// index = 0~3</param>
+    /// <returns>왼쪽 위치. index가 0(맨 왼쪽)이면 이웃이 없으므로 null</returns>
+    public BoardPosition? GetLeft(BoardPosition pos)
+    {
+        if (pos.index <= 0)
+            return null;
+
+        return new BoardPosition(pos.row, pos.index-1);
+    }
+
+
+    /// <summary>
+    /// 지정된 보드 위치의 오른쪽 위치를 반환
+    /// </summary>
+    /// <param name="pos">기준이 되는 보드 위치 (row , index) / 
+    /// row = ( preview, monster, player) / 
+    /// index = 0~3</param>
+    /// <returns>오른쪽 위치. index가 3(맨 오른쪽)이면 이웃이 없으므로 null</returns>
+    public BoardPosition? GetRight(BoardPosition pos)
+    {
+        if (pos.index >= 3)
+            return null;
+
+        return new BoardPosition(pos.row, pos.index + 1);
     }
 }
