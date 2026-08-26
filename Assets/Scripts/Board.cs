@@ -1,31 +1,47 @@
 
 /// <summary>
-/// 전투에 사용되는 배열판 클래스
+/// 스테이지(전투)에 활용되는 보드판
 /// </summary>
 public class Board
 {
-    // 배열 row값을 Enum으로 관리
-    public enum BoardRow { Preview, Monster, Player };
-
     // Board 배열판 3줄
     public CardInstance[] previewRow = new CardInstance[4];
     public CardInstance[] monsterRow = new CardInstance[4];
     public CardInstance[] playerRow = new CardInstance[4];
 
-    // 해당 배열 카드 가져오기
+    
+
+    /// <summary>
+    /// 지정된 보드 열과 인덱스에 해당하는 카드 인스턴스를 확인
+    /// </summary>
+    /// <param name="row">가져올 보드 열 (Preview, Monster, Player)</param>
+    /// <param name="index">해당 열 안에서 카드 위치 ( 0 ~ 3 )</param>
+    /// <returns>해당 위치의 CardInstance, 카드가 없다면 null</returns>
     public CardInstance GetCard(BoardRow row, int index)
     {
         CardInstance[] target = GetRowArray(row);
         return target[index];
     }
 
-    // 배열에 카드 설정
+    /// <summary>
+    /// 지정된 보드 열과 인덱스에 카드 인스턴스를 설정
+    /// </summary>
+    /// <param name="row">가져올 보드 열 (Preview, Monster, Player)</param>
+    /// <param name="index">해당 열 안에서 카드 위치 ( 0 ~ 3 )</param>
+    /// <param name="card">놓을 카드인스턴스</param>
     public void SetCard(BoardRow row, int index, CardInstance card)
     {
         CardInstance[] target = GetRowArray(row);
         target[index] = card;
     }
 
+    /// <summary>
+    /// BoardRow 값에 해당하는 실제 배열을 반환.
+    /// GetCard/SetCard가 각자 매핑 로직을 중복하지 않도록 이 메서드로 일원화.
+    /// </summary>
+    /// <param name="row">조회할 보드 열</param>
+    /// <returns>해당 열의 CardInstance 배열</returns>
+    /// <exception cref="System.ArgumentException">정의되지 않은 BoardRow 값이 들어온 경우</exception>
     private CardInstance[] GetRowArray(BoardRow row)
     {
         switch(row)
