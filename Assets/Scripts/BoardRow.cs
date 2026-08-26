@@ -1,5 +1,5 @@
 
 public enum BoardRow
 {
-    Preview, Monster, Player
+    Preview, Enemy, Player
 }

@@ -9,7 +9,7 @@ public class Board
 {
     // Board 배열판 3줄
     public CardInstance[] previewRow = new CardInstance[4];
-    public CardInstance[] monsterRow = new CardInstance[4];
+    public CardInstance[] enemyRow = new CardInstance[4];
     public CardInstance[] playerRow = new CardInstance[4];
 
 
@@ -84,8 +84,8 @@ public class Board
         {
             case BoardRow.Preview:
                 return previewRow;
-            case BoardRow.Monster:
-                return monsterRow;
+            case BoardRow.Enemy:
+                return enemyRow;
             case BoardRow.Player:
                 return playerRow;
             default:
@@ -105,8 +105,8 @@ public class Board
     {
         BoardRow opposite = pos.row switch
         {
-            BoardRow.Player => BoardRow.Monster,
-            BoardRow.Monster => BoardRow.Player,
+            BoardRow.Player => BoardRow.Enemy,
+            BoardRow.Enemy => BoardRow.Player,
             BoardRow.Preview => throw new ArgumentException("Preview row는 마주보는 줄이 없습니다."),
             _ => throw new ArgumentException($"Unknown row: {pos.row}")
         };
